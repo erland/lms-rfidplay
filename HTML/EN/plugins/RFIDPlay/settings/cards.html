@@ -1,0 +1,27 @@
+[% PROCESS settings/header.html %]
+
+		<table width="100%">
+			<tr>
+				<th>[% "PLUGIN_RFIDPLAY_CARDID" | string %]</th>
+				<th>[% "PLUGIN_RFIDPLAY_PLAYLISTURL" | string %]</th>
+				<th>[% "PLUGIN_RFIDPLAY_PLAYERS" | string %]</th>
+				<th>[% "DELETE" | string %]</th>
+			</tr>
+			[% FOREACH cardId = cards.keys %]
+				<tr>
+					<td width="10%">[% cardId %]</td>
+					<td width="50%">
+						<input type="text" name="playlist[% cardId %]" value="[% cards.item(cardId).playlist %]" style="width: 98%;" class="stdedit"/>
+					</td>
+					<td>
+                                                <input type="text" name="players[% cardId %]" value="[% cards.item(cardId).players %]" style="width: 98%;" class="stdedit"/>
+                                        </td>
+					<td style="text-align:center;">
+						<input type="checkbox" name="delete[% cardId %]" class="stdedit" />
+					</td>
+
+				</tr>
+			[% END %]
+		</table>
+[% PROCESS settings/footer.html %]
+

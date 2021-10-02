@@ -1,0 +1,48 @@
+name: Package and release plugin
+
+on:
+  release:
+    types:
+      - released
+
+jobs:
+  build:
+    name: Package and publish release
+    runs-on: ubuntu-latest
+    env:
+      PLUGIN_NAME: RFIDPlay
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: ${{ env.PLUGIN_NAME }}
+
+      - name: Update install.xml
+        run: |
+          sed -i s/RELEASENUMBER/${{ github.event.release.tag_name }}/ $PLUGIN_NAME/install.xml
+          
+      - name: Package zip
+        run: |
+          zip -D -r $PLUGIN_NAME.zip $PLUGIN_NAME -x "*/\.git/*" "*/\.github/*" "*/repo.xml"
+          
+      - name: Update repo.xml
+        run: |
+          mkdir repository
+          cp $PLUGIN_NAME/repo.xml repository/.
+          sed -i -e s/RELEASENUMBER/${{ github.event.release.tag_name }}/g -e s/RELEASESHA/$(sha1sum $PLUGIN_NAME.zip| awk '{print $1}')/ repository/repo.xml
+          
+      - name: Publish plugin zip
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+           upload_url: ${{ github.event.release.upload_url }}
+           asset_path: ./${{ env.PLUGIN_NAME }}.zip
+           asset_name: ${{ env.PLUGIN_NAME }}-${{ github.event.release.tag_name }}.zip
+           asset_content_type: application/zip
+           
+      - name: Publish repository
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./repository
