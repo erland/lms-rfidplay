@@ -7,5 +7,14 @@ PLUGIN_RFIDPLAY_CARDID
 PLUGIN_RFIDPLAY_PLAYLISTURL
 	EN	Playlist path or identity
 
-PLUGIN_RFIDPLAY_PLAYERS
-	EN	Players
+PLUGIN_RFIDPLAY_PLAYER
+	EN	Player
+
+PLUGIN_RFIDPLAY_PLAYER_DESC
+	EN	Select the player that music should be played on when an RFID card is used
+
+PLUGIN_RFIDPLAY_CARDS
+	EN	RFID cards
+
+PLUGIN_RFIDPLAY_CARDS_DESC
+	EN	RFID cards that has been registered and is tied to a playlist or song. To register a new card just insert it and it will appear in this list so you can tie it to a playlist.

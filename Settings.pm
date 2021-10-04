@@ -22,6 +22,7 @@ use base qw(Slim::Web::Settings);
 
 use Slim::Utils::Log;
 use Slim::Utils::Prefs;
+use Slim::Player::Client;
 
 my $prefs = preferences('plugin.rfidplay');
 my $log   = logger('plugin.rfidplay');
@@ -31,7 +32,7 @@ sub name {
 }
 
 sub prefs {
-        return ( $prefs, qw() );
+        return ( $prefs, qw(player) );
 }
 
 sub page {
@@ -53,7 +54,7 @@ sub handler {
 			if ( !defined($cards->{$cardId})) {
 				$cards->{$cardId} = {};
 			}
-			foreach (qw(playlist players)) {
+			foreach (qw(playlist)) {
 				if ($params->{"$_$cardId"} ne '') {
 					$cards->{$cardId}->{$_} = $params->{"$_$cardId"};
 				}else {
@@ -64,6 +65,15 @@ sub handler {
 		$prefs->set('cards', $cards);
 	}
 	$params->{'cards'} = $prefs->get('cards');
+	my @players = ();
+	foreach (Slim::Player::Client::clients()) {
+		my $player = {
+			id => $_->id,
+			name => $_->name
+		};
+		push @players, $player;
+	}
+	$params->{'players'} = \@players;
 	$class->SUPER::handler($client, $params);
 }
 

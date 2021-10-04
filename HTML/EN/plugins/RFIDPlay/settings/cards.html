@@ -1,10 +1,20 @@
 [% PROCESS settings/header.html %]
-
+	[% WRAPPER setting title="PLUGIN_RFIDPLAY_PLAYER" desc="PLUGIN_RFIDPLAY_PLAYER_DESC" %]
+                <select class="stdedit" name="pref_player" id="noupnp">
+			[% FOREACH player = players %]
+				<option [% IF prefs.pref_player == player.id %]selected="selected" [% END %]value="[% player.id %]">
+                                	[% player.name %]
+                        	</option>	
+			[% END %]
+                        <option [% IF prefs.pref_player == '' %]selected="selected" [% END %]value="">
+                        </option>
+                </select>
+	[% END %]
+	[% WRAPPER setting title="PLUGIN_RFIDPLAY_CARDS" desc="PLUGIN_RFIDPLAY_CARDS_DESC" %]
 		<table width="100%">
 			<tr>
 				<th>[% "PLUGIN_RFIDPLAY_CARDID" | string %]</th>
 				<th>[% "PLUGIN_RFIDPLAY_PLAYLISTURL" | string %]</th>
-				<th>[% "PLUGIN_RFIDPLAY_PLAYERS" | string %]</th>
 				<th>[% "DELETE" | string %]</th>
 			</tr>
 			[% FOREACH cardId = cards.keys %]
@@ -14,14 +24,12 @@
 						<input type="text" name="playlist[% cardId %]" value="[% cards.item(cardId).playlist %]" style="width: 98%;" class="stdedit"/>
 					</td>
 					<td>
-                                                <input type="text" name="players[% cardId %]" value="[% cards.item(cardId).players %]" style="width: 98%;" class="stdedit"/>
-                                        </td>
-					<td style="text-align:center;">
 						<input type="checkbox" name="delete[% cardId %]" class="stdedit" />
 					</td>
 
 				</tr>
 			[% END %]
 		</table>
+	[% END %]
 [% PROCESS settings/footer.html %]
 

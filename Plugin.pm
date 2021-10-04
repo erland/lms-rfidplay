@@ -59,9 +59,10 @@ sub handlePlayRequest {
 		if($cards->{$rfidIdentity}) {
 			$log->warn("Found entry for $rfidIdentity");
 			my $entry = $cards->{$rfidIdentity};
-			if($entry->{'playlist'} && $entry->{'players'}) {
-				$log->warn("Entry contains both playlist and players");
-				foreach my $playerId (split(/ /,$entry->{'players'})) {
+			if($entry->{'playlist'}) {
+				$log->warn("Entry contains playlist: ".$entry->{'playlist'});
+				my $playerId = $prefs->get('player');
+				if($playerId) {
 					$log->warn("Searching for player: $playerId");
 					my $player = Slim::Player::Client::getClient($playerId);
 					if(defined($player)) {
