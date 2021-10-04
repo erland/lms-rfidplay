@@ -42,6 +42,7 @@ sub initPlugin {
 sub webPages {
 	my $class = shift;
 	Slim::Web::Pages->addRawFunction('RFIDPlay/play/', \&handlePlayRequest);
+	Slim::Web::Pages->addRawFunction('RFIDPlay/volume/', \&handleVolumeRequest);
 }
 
 sub handlePlayRequest {
@@ -83,6 +84,34 @@ sub handlePlayRequest {
 	Slim::Web::HTTP::addHTTPResponse( $httpClient, $httpResponse, \$body);
 	return;
 }
+
+sub handleVolumeRequest {
+        my ($httpClient, $httpResponse) = @_;
+
+        my $req = $httpResponse->request;
+
+        # Extract volume command
+        my $volumeChange = $req->uri->path;
+        $volumeChange =~ s/^\/plugins\/RFIDPlay\/volume\///;
+
+	my $playerId = $prefs->get('player');
+        if($playerId) {
+		$log->warn("Searching for player: $playerId");
+                my $player = Slim::Player::Client::getClient($playerId);
+                if(defined($player)) {
+                        $log->warn("Trying to change volume ".$volumeChange." on ".$playerId);
+                        my $request = $player->execute(['mixer', 'volume', $volumeChange]);
+                }
+        }
+
+	my $body = "";
+        $httpResponse->code(200);
+        $httpResponse->header( 'Content-Type' => 'application/json' );
+        $httpResponse->header( 'Content-Length', length $body );
+        Slim::Web::HTTP::addHTTPResponse( $httpClient, $httpResponse, \$body);
+        return;
+}
+
 
 sub getDisplayName {
 	return 'PLUGIN_RFIDPLAY';
