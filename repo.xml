@@ -5,13 +5,13 @@
     <title lang="EN">RFID Play plugin repository</title>
   </details>
   <plugins>
-    <plugin maxTarget="8.2.*" minTarget="8.2" name="RFIDPlay" version="0.1.0">
+    <plugin maxTarget="8.2.*" minTarget="8.2" name="RFIDPlay" version="0.2.0">
       <title lang="EN">RFID Play</title>
       <desc lang="EN">This plugin provides a HTTP interface that can be triggered with an RFID card identity and makes it possible to map this to a playlist or song that should start to play when the RFID card is used.</desc>
       <creator>Erland Isaksson</creator>
       <email>erland@isaksson.info</email>
-      <url>https://github.com/erland/lms-rfidplay/releases/download/0.1.0/RFIDPlay-0.1.0.zip</url>
-      <sha>d98b071d52b6175be5015bd60953ab02179bc1e7</sha>
+      <url>https://github.com/erland/lms-rfidplay/releases/download/0.2.0/RFIDPlay-0.2.0.zip</url>
+      <sha>78acd56385150811a9ea42137261aa9b8b3a749d</sha>
     </plugin>
   </plugins>
 </extensions>
