@@ -127,8 +127,13 @@ sub handlePlaylistRequest {
                 $log->warn("Searching for player: $playerId");
                 my $player = Slim::Player::Client::getClient($playerId);
                 if(defined($player)) {
-                        $log->warn("Trying to move to other song ".$playlistMove." on ".$playerId);
-                        my $request = $player->execute(['playlist', 'index', $playlistMove]);
+			if($playlistMove eq "pause") {
+                                $log->warn("Switching pause state on ".$playerId);
+                                my $request = $player->execute(['pause']);
+			}else {
+                                $log->warn("Trying to move to other song ".$playlistMove." on ".$playerId);
+                                my $request = $player->execute(['playlist', 'index', $playlistMove]);
+                        }
                 }
         }
 
